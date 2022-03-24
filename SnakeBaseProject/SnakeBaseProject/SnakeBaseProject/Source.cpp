@@ -12,6 +12,7 @@
 #include <sstream>
 #include "Game.h"
 
+
 using namespace std;
 
 // Globals
@@ -23,6 +24,8 @@ int main() {
 	initialiseDisplay();
 	clearScreen();
 	drawSnakeFrame();
-	initialiseSnake();
-	drawSnake();
+	initialiseGrid();
+	drawGrid();
+
+	moveLoop();
 }

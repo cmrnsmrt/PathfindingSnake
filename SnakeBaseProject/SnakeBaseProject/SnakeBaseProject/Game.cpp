@@ -9,15 +9,26 @@
 #include <iostream> 
 #include <sstream>
 #include <time.h>
+#include <queue>
+
+#define KEY_UP 72
+#define KEY_DOWN 80
+#define KEY_LEFT 75
+#define KEY_RIGHT 77
+
  
 CONSOLE_SCREEN_BUFFER_INFO consoleInfo;
 HANDLE hConsole;
 
 using namespace std;
 
+int moveDir = 0; // 1 = right, 2 = down, 3= left, 4 = up
 int scrollNumber = 0;
-
 int snaketrix[20][20]; // Like matrix, but a snake
+
+struct coordinates { int x, y; };
+std::deque<coordinates*> body;
+
 
 void initialiseDisplay()
 {
@@ -113,7 +124,7 @@ void drawSnakeFrame() // Draws the box that the snake is confined to
 	
 }
 
-void drawSnake() {
+void drawGrid() {
 	for (int outer = 0; outer < 20; outer++) {
 		for (int inner = 0; inner < 10; inner++) {
 			if (snaketrix[outer][inner] == 0) {
@@ -130,11 +141,13 @@ void drawSnake() {
 			}
 		}
 	}
+
+
 	
 	draw((0), (15), "                                              ");
 }
 
-void initialiseSnake() {
+void initialiseGrid() {
 	for (int outer = 0; outer < 20; outer++) {
 		for (int inner = 0; inner < 20; inner++) {
 			snaketrix[outer][inner] = 0;
@@ -147,5 +160,44 @@ void initialiseSnake() {
 	int startY = rand() % 9;
 
 	snaketrix[startX][startY] = 1;
-	snaketrix[7][7] = 3;
+
+	coordinates bodyXY = { startX, startY };
+	body.push_back(new coordinates(bodyXY));
+
+	 snaketrix[7][7] = 3;
+}
+
+void moveLoop() {
+
+	int c = 0;
+	while (1)
+	{
+		Sleep(1000);
+
+		c = 0;
+
+		switch ((c = _getch())) {
+		case KEY_UP:
+			moveDir = 4;
+			break;
+		case KEY_DOWN:
+			moveDir = 2;
+			break;
+		case KEY_LEFT:
+			moveDir = 3;
+			break;
+		case KEY_RIGHT:
+			moveDir = 1;
+			break;
+		default:
+			break;
+		}
+
+		if (moveDir == 1) {
+			coordinates* headXY;
+			headXY = body.back();
+			cout << headXY;
+		}
+
+	}
 }
