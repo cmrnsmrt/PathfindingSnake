@@ -11,6 +11,8 @@ void setColor(int fcolor, int bcolor);
 void clearScreen(void);
 int checkColor(string symbol);
 void drawSnakeFrame();
+void initialiseSnake();
+void drawSnake();
 
 #endif
 

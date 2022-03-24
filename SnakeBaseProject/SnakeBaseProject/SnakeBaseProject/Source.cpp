@@ -23,4 +23,6 @@ int main() {
 	initialiseDisplay();
 	clearScreen();
 	drawSnakeFrame();
+	initialiseSnake();
+	drawSnake();
 }

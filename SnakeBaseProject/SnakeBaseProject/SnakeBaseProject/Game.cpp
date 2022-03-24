@@ -8,6 +8,7 @@
 #include <string> 
 #include <iostream> 
 #include <sstream>
+#include <time.h>
  
 CONSOLE_SCREEN_BUFFER_INFO consoleInfo;
 HANDLE hConsole;
@@ -15,6 +16,8 @@ HANDLE hConsole;
 using namespace std;
 
 int scrollNumber = 0;
+
+int snaketrix[20][20]; // Like matrix, but a snake
 
 void initialiseDisplay()
 {
@@ -79,33 +82,70 @@ void drawSnakeFrame() // Draws the box that the snake is confined to
 	stringstream ss; // Creates a string stream variable to allow characters to be converted into strings for output
 
 	setColor(1);
-	draw((5), (1), "##########     ##########");
+	draw((5), (1), "##########     #########");
 	setColor(2);
 	draw((15), (1), "SNAKE");
 	setColor(5);
-	draw((5), (2), "#########################");
+	draw((5), (2), "#######################");
 	setColor(1);
 	draw((5), (2), "#");
 	setColor(1);
-	draw((29), (2), "#");
+	draw((28), (2), "#");
 
 	for (int i = 0; i < 10; i++) { // Loop for center section
 		setColor(1);
 		draw((5), (3 + i), "#");
 		setColor(5);
-		draw((6), (3 + i), "#                     #");
+		draw((6), (3 + i), "#                    #");
 		setColor(1);
-		draw((29), (3 + i), "#");
+		draw((28), (3 + i), "#");
 	}
 
 	setColor(5);
-	draw((5), (13), "#########################");
+	draw((5), (13), "#######################");
 	setColor(1);
 	draw((5), (13), "#");
 	setColor(1);
-	draw((29), (13), "#");
+	draw((28), (13), "#");
 	setColor(1);
-	draw((5), (14), "#########################");
+	draw((5), (14), "########################");
+	draw((0), (15), "                                              ");
 	
+}
 
+void drawSnake() {
+	for (int outer = 0; outer < 20; outer++) {
+		for (int inner = 0; inner < 10; inner++) {
+			if (snaketrix[outer][inner] == 0) {
+				setColor(3);
+				draw((outer+7), (inner+3), "X");
+			}
+			else if (snaketrix[outer][inner] == 1) {
+				setColor(2);
+				draw((outer+7), (inner+3), "S");
+			}
+			else if (snaketrix[outer][inner] == 3) {
+				setColor(2);
+				draw((outer + 7), (inner + 3), "O");
+			}
+		}
+	}
+	
+	draw((0), (15), "                                              ");
+}
+
+void initialiseSnake() {
+	for (int outer = 0; outer < 20; outer++) {
+		for (int inner = 0; inner < 20; inner++) {
+			snaketrix[outer][inner] = 0;
+		}
+	}
+
+	srand(time(NULL));
+
+	int startX = rand() % 19;
+	int startY = rand() % 9;
+
+	snaketrix[startX][startY] = 1;
+	snaketrix[7][7] = 3;
 }
