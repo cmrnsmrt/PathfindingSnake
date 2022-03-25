@@ -72,20 +72,12 @@ void clearScreen(void)
 	}
 }
 
-int checkColor(string symbol) // This allows each symbol to be printed in a unique colour
-{
-	int colorNum = 0;
+void endScreen(int moves, int score) {
 
-	if (symbol == "^") { // If the symbol is a carrat then it is colour 3
-		colorNum = 3;
-	}
-	else if (symbol == "&") { // If the symbol is an ampersand then it is colour 5
-		colorNum = 5;
-	}
-	else if (symbol == "@") { // If the symbol is a at symbol then it is colour 7
-		colorNum = 6;
-	}
-	return colorNum; // Returns the colour value to be used in a draw statement
+	initialiseDisplay();
+
+	string output = "Your final score was: " + score;
+	draw(7,1, output);
 }
 
 void drawSnakeFrame() // Draws the box that the snake is confined to
@@ -129,7 +121,7 @@ void drawGrid() {
 		for (int inner = 0; inner < 10; inner++) {
 			if (snaketrix[outer][inner] == 0) {
 				setColor(3);
-				draw((outer+7), (inner+3), "X");
+				draw((outer+7), (inner+3), " ");
 			}
 			else if (snaketrix[outer][inner] == 1) {
 				setColor(2);
@@ -142,8 +134,6 @@ void drawGrid() {
 		}
 	}
 
-
-	
 	draw((0), (15), "                                              ");
 }
 
@@ -174,106 +164,174 @@ void initialiseGrid() {
 	snaketrix[7][7] = 3;
 }
 
+void newFruit() {
+	srand(time(NULL));
+	int fruitSet = 0;
+
+	while (fruitSet == 0) {
+		int startX = rand() % 18;
+		int startY = rand() % 9;
+
+		if (snaketrix[startX][startY] != 1 or snaketrix[startX][startY] != 3) {
+			snaketrix[startX][startY] = 3;
+			setColor(2);
+			draw((startX + 7), (startY + 3), "O");
+			fruitSet = 1;
+		}
+	}
+	
+
+	
+}
+
 int moveLoop() {
 
 	int c = 0;
+
+	moveDir = 0;
+
+	while (moveDir == 0)
+	{
+		int snakeMoved = 0;
+
+		c = 0;
+
+		c = _getch();
+		
+		if (c == KEY_UP) {
+			moveDir = 4;
+		}
+		else if (c == KEY_RIGHT) {
+			moveDir = 1;
+		}
+		else if (c == KEY_DOWN) {
+			moveDir = 2;
+		}
+		else if (c == KEY_LEFT) {
+			moveDir = 3;
+		}
+	}
+
+	return moveDir;
+}
+
+int moveSnake(int moveDir) {
+
 	coordinates headXY;
 
-	moveDir = 1;
-	int printcount = 0;
-
-	while (1)
-	{
-		Sleep(200);
-
-		//c = 0;
-
-		switch ((c = _getch())) {
-		case KEY_UP:
-			moveDir = 4;
-			break;
-		case KEY_RIGHT:
-			moveDir = 1;
-			break;
-		case KEY_DOWN:
-			moveDir = 2;
-			break;
-		case KEY_LEFT:
-			moveDir = 3;
-			break;
-		default:
-			break;
-		}
-
-		switch (moveDir) {
-		case 4:
-
-			headXY = body.back();
-			headXY.y = headXY.y - 1;
-			body.push_back(headXY);
-			setColor(2);
-			draw((headXY.x + 7), (headXY.y + 3), "S");
-
-			headXY = body.front();
-			setColor(3);
-			draw((headXY.x + 7), (headXY.y + 3), "X");
-			body.pop_front();
-
-			break;
-		case 2:
-
-			headXY = body.back();
-			headXY.y = headXY.y + 1;
-			body.push_back(headXY);
-			setColor(2);
-			draw((headXY.x + 7), (headXY.y + 3), "S");
-
-			headXY = body.front();
-			setColor(3);
-			draw((headXY.x + 7), (headXY.y + 3), "X");
-			body.pop_front();
-
-			break;
-		case 3:
-
-			headXY = body.back();
-			headXY.x = headXY.x - 1;
-			body.push_back(headXY);
-			setColor(2);
-			draw((headXY.x + 7), (headXY.y + 3), "S");
-
-			headXY = body.front();
-			setColor(3);
-			draw((headXY.x + 7), (headXY.y + 3), "X");
-			body.pop_front();
-
-			break;
-		case 1:
-
-			headXY = body.back();
-			headXY.x = headXY.x + 1;
-			body.push_back(headXY);
-			setColor(2);
-			draw((headXY.x + 7), (headXY.y + 3), "S");
-
-			printcount++;
-
-			headXY = body.front();
-			setColor(3);
-			draw((headXY.x + 7), (headXY.y + 3), "X");
-			body.pop_front();
-
-			break;
-		default:
-			break;
-		}
+	switch (moveDir) {
+	case 4:
 
 		headXY = body.back();
+		headXY.y = headXY.y - 1;
+		body.push_back(headXY);
+		setColor(2);
+		draw((headXY.x + 7), (headXY.y + 3), "S");
 
-		if ((headXY.x >= 20 or headXY.x < 0) or (headXY.y >= 10 or headXY.y < 0)) {
+		if (snaketrix[headXY.x][headXY.y] == 1) {
 			return 1;
 		}
 
+		if (snaketrix[headXY.x][headXY.y] == 3) {
+			snaketrix[headXY.x][headXY.y] = 1;
+			return 3;
+		}
+
+		snaketrix[headXY.x][headXY.y] = 1;
+
+		headXY = body.front();
+		setColor(3);
+		draw((headXY.x + 7), (headXY.y + 3), " ");
+		snaketrix[headXY.x][headXY.y] = 0;
+		body.pop_front();
+
+		break;
+	case 2:
+
+		headXY = body.back();
+		headXY.y = headXY.y + 1;
+		body.push_back(headXY);
+		setColor(2);
+		draw((headXY.x + 7), (headXY.y + 3), "S");
+
+		if (snaketrix[headXY.x][headXY.y] == 1) {
+			return 1;
+		}
+
+		if (snaketrix[headXY.x][headXY.y] == 3) {
+			snaketrix[headXY.x][headXY.y] = 1;
+			return 3;
+		}
+
+		snaketrix[headXY.x][headXY.y] = 1;
+
+		headXY = body.front();
+		setColor(3);
+		draw((headXY.x + 7), (headXY.y + 3), " ");
+		snaketrix[headXY.x][headXY.y] = 0;
+		body.pop_front();
+
+		break;
+	case 3:
+
+		headXY = body.back();
+		headXY.x = headXY.x - 1;
+		body.push_back(headXY);
+		setColor(2);
+		draw((headXY.x + 7), (headXY.y + 3), "S");
+
+		if (snaketrix[headXY.x][headXY.y] == 1) {
+			return 1;
+		}
+
+		if (snaketrix[headXY.x][headXY.y] == 3) {
+			snaketrix[headXY.x][headXY.y] = 1;
+			return 3;
+		}
+
+		snaketrix[headXY.x][headXY.y] = 1;
+
+		headXY = body.front();
+		setColor(3);
+		draw((headXY.x + 7), (headXY.y + 3), " ");
+		snaketrix[headXY.x][headXY.y] = 0;
+		body.pop_front();
+
+		break;
+	case 1:
+
+		headXY = body.back();
+		headXY.x = headXY.x + 1;
+		body.push_back(headXY);
+		setColor(2);
+		draw((headXY.x + 7), (headXY.y + 3), "S");
+
+		if (snaketrix[headXY.x][headXY.y] == 1) {
+			return 1;
+		}
+
+		if (snaketrix[headXY.x][headXY.y] == 3) {
+			snaketrix[headXY.x][headXY.y] = 1;
+			return 3;
+		}
+
+		snaketrix[headXY.x][headXY.y] = 1;
+
+		headXY = body.front();
+		setColor(3);
+		draw((headXY.x + 7), (headXY.y + 3), " ");
+		snaketrix[headXY.x][headXY.y] = 0;
+		body.pop_front();
+
+		break;
+	default:
+		break;
+	}
+
+	headXY = body.back();
+
+	if ((headXY.x >= 20 or headXY.x < 0) or (headXY.y >= 10 or headXY.y < 0)) {
+		return 1;
 	}
 
 	return 0;

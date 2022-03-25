@@ -17,5 +17,8 @@ void drawSnakeFrame();
 void initialiseGrid();
 void drawGrid();
 int moveLoop();
+int moveSnake(int moveDir);
+void newFruit();
+void endScreen(int moves, int score);
 
 #endif

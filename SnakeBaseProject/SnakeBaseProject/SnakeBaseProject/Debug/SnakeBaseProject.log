@@ -1,3 +1,4 @@
 ﻿  Game.cpp
-C:\Users\camer\Documents\GitHub\CMP304Unit1Assessment\SnakeBaseProject\SnakeBaseProject\SnakeBaseProject\Game.cpp(157,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\camer\Documents\GitHub\CMP304Unit1Assessment\SnakeBaseProject\SnakeBaseProject\SnakeBaseProject\Game.cpp(160,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\camer\Documents\GitHub\CMP304Unit1Assessment\SnakeBaseProject\SnakeBaseProject\SnakeBaseProject\Game.cpp(181,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
   SnakeBaseProject.vcxproj -> C:\Users\camer\Documents\GitHub\CMP304Unit1Assessment\SnakeBaseProject\SnakeBaseProject\Debug\SnakeBaseProject.exe
