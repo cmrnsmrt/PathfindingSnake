@@ -16,6 +16,6 @@ int checkColor(string symbol);
 void drawSnakeFrame();
 void initialiseGrid();
 void drawGrid();
-void moveLoop();
+int moveLoop();
 
 #endif

@@ -27,7 +27,7 @@ int scrollNumber = 0;
 int snaketrix[20][20]; // Like matrix, but a snake
 
 struct coordinates { int x, y; };
-std::deque<coordinates*> body;
+std::deque<coordinates> body;
 
 
 void initialiseDisplay()
@@ -156,29 +156,44 @@ void initialiseGrid() {
 
 	srand(time(NULL));
 
-	int startX = rand() % 19;
+	int startX = rand() % 18;
 	int startY = rand() % 9;
 
 	snaketrix[startX][startY] = 1;
 
-	coordinates bodyXY = { startX, startY };
-	body.push_back(new coordinates(bodyXY));
+	coordinates headXY;
+	headXY.x = startX;
+	headXY.y = startY;
+	body.push_back(headXY);
 
-	 snaketrix[7][7] = 3;
+	snaketrix[startX+1][startY] = 1;
+
+	headXY.x = startX+1;
+	body.push_back(headXY);
+
+	snaketrix[7][7] = 3;
 }
 
-void moveLoop() {
+int moveLoop() {
 
 	int c = 0;
+	coordinates headXY;
+
+	moveDir = 1;
+	int printcount = 0;
+
 	while (1)
 	{
-		Sleep(1000);
+		Sleep(200);
 
-		c = 0;
+		//c = 0;
 
 		switch ((c = _getch())) {
 		case KEY_UP:
 			moveDir = 4;
+			break;
+		case KEY_RIGHT:
+			moveDir = 1;
 			break;
 		case KEY_DOWN:
 			moveDir = 2;
@@ -186,18 +201,80 @@ void moveLoop() {
 		case KEY_LEFT:
 			moveDir = 3;
 			break;
-		case KEY_RIGHT:
-			moveDir = 1;
+		default:
+			break;
+		}
+
+		switch (moveDir) {
+		case 4:
+
+			headXY = body.back();
+			headXY.y = headXY.y - 1;
+			body.push_back(headXY);
+			setColor(2);
+			draw((headXY.x + 7), (headXY.y + 3), "S");
+
+			headXY = body.front();
+			setColor(3);
+			draw((headXY.x + 7), (headXY.y + 3), "X");
+			body.pop_front();
+
+			break;
+		case 2:
+
+			headXY = body.back();
+			headXY.y = headXY.y + 1;
+			body.push_back(headXY);
+			setColor(2);
+			draw((headXY.x + 7), (headXY.y + 3), "S");
+
+			headXY = body.front();
+			setColor(3);
+			draw((headXY.x + 7), (headXY.y + 3), "X");
+			body.pop_front();
+
+			break;
+		case 3:
+
+			headXY = body.back();
+			headXY.x = headXY.x - 1;
+			body.push_back(headXY);
+			setColor(2);
+			draw((headXY.x + 7), (headXY.y + 3), "S");
+
+			headXY = body.front();
+			setColor(3);
+			draw((headXY.x + 7), (headXY.y + 3), "X");
+			body.pop_front();
+
+			break;
+		case 1:
+
+			headXY = body.back();
+			headXY.x = headXY.x + 1;
+			body.push_back(headXY);
+			setColor(2);
+			draw((headXY.x + 7), (headXY.y + 3), "S");
+
+			printcount++;
+
+			headXY = body.front();
+			setColor(3);
+			draw((headXY.x + 7), (headXY.y + 3), "X");
+			body.pop_front();
+
 			break;
 		default:
 			break;
 		}
 
-		if (moveDir == 1) {
-			coordinates* headXY;
-			headXY = body.back();
-			cout << headXY;
+		headXY = body.back();
+
+		if ((headXY.x >= 20 or headXY.x < 0) or (headXY.y >= 10 or headXY.y < 0)) {
+			return 1;
 		}
 
 	}
+
+	return 0;
 }

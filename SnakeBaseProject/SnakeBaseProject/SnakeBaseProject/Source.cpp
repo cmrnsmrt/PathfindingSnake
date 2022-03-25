@@ -27,5 +27,8 @@ int main() {
 	initialiseGrid();
 	drawGrid();
 
-	moveLoop();
+	while (1) {
+		moveLoop();
+	}
+	
 }
