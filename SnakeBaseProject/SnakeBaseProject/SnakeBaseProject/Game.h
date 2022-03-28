@@ -19,6 +19,7 @@ void drawGrid();
 int moveLoop();
 int moveSnake(int moveDir);
 void newFruit();
-void endScreen(int moves, int score);
+void endScreen(string score, string moves);
+void updateScore(string score, string moves);
 
 #endif

@@ -33,12 +33,12 @@ int main() {
 	drawSnakeFrame();
 	initialiseGrid();
 	drawGrid();
-	newFruit();
 
 	while (1) {
 		dir = moveLoop();
 		result = moveSnake(dir);
 		moves++;
+		
 
 
 		if (result == 1) {
@@ -49,16 +49,11 @@ int main() {
 			newFruit();
 			score++;
 		}
+
+		updateScore(to_string(score), to_string(moves));
 	}
 
-	string output = "Your score was: " + score;
+	endScreen(to_string(score), to_string(moves));
 
-	draw((7), (2), output);
-
-	output = "Your moves were: " + moves;
-
-	draw((7), (3), output);
-
-	endScreen(moves, score);
 	return 0;
 }

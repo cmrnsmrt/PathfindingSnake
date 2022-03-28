@@ -72,14 +72,6 @@ void clearScreen(void)
 	}
 }
 
-void endScreen(int moves, int score) {
-
-	initialiseDisplay();
-
-	string output = "Your final score was: " + score;
-	draw(7,1, output);
-}
-
 void drawSnakeFrame() // Draws the box that the snake is confined to
 {
 	stringstream ss; // Creates a string stream variable to allow characters to be converted into strings for output
@@ -172,7 +164,7 @@ void newFruit() {
 		int startX = rand() % 18;
 		int startY = rand() % 9;
 
-		if (snaketrix[startX][startY] != 1 or snaketrix[startX][startY] != 3) {
+		if ((snaketrix[startX][startY] != 1) and (snaketrix[startX][startY] != 3)) {
 			snaketrix[startX][startY] = 3;
 			setColor(2);
 			draw((startX + 7), (startY + 3), "O");
@@ -182,6 +174,33 @@ void newFruit() {
 	
 
 	
+}
+
+void endScreen(string score, string moves) {
+
+	setColor(1);
+	draw((5), (19), "########################");
+	draw((5), (20), "######            ######");
+	draw((5), (21), "########################");
+	setColor(2);
+	draw((12), (20), "GAME  OVER");
+
+	draw((5), (16), "Your score was:        ");
+	draw((22), (16), score);
+
+	draw((5), (17), "Your moves count was:        ");
+	draw((27), (17), moves);
+
+	draw((5), (23), "Thank you for playing!");
+}
+
+void updateScore(string score, string moves) {
+	setColor(2);
+	draw((5), (16), "Your score is:        ");
+	draw((21), (16), score);
+
+	draw((5), (17), "Your moves count is:       ");
+	draw((26), (17), moves);
 }
 
 int moveLoop() {
