@@ -18,6 +18,8 @@
 #define KEY_DOWN 80
 #define KEY_LEFT 75
 #define KEY_RIGHT 77
+#define WIDTH 20
+#define HEIGHT 10
 
 CONSOLE_SCREEN_BUFFER_INFO consoleInfo;
 HANDLE hConsole;
@@ -27,6 +29,13 @@ using namespace std;
 int moveDir = 0; // 1 = right, 2 = down, 3= left, 4 = up
 int scrollNumber = 0;
 int snaketrix[20][20]; // Like matrix, but a snake
+struct space {
+	double f;
+	double g;
+	double h;
+	bool open;
+	bool closed;
+};
 
 // Why a matrix?
 
@@ -120,7 +129,7 @@ void drawSnakeFrame() // Draws the box that the snake is confined to
 void drawGrid() { // This draws the contents of the snake game by checking content of snaketrix
 	for (int outer = 0; outer < 20; outer++) {
 		for (int inner = 0; inner < 10; inner++) {
-			if (snaketrix[outer][inner] == 0) { // Empty space. Even empty spaces must be redrawn each move because the snake could have been here and moved
+			if (snaketrix[outer][inner] == 2) { // Empty space. Even empty spaces must be redrawn each move because the snake could have been here and moved
 				setColor(1); // "Blue"
 				draw((outer+7), (inner+3), " ");
 			}
@@ -141,7 +150,7 @@ void drawGrid() { // This draws the contents of the snake game by checking conte
 void initialiseGrid() { // Sets up the snaketrix
 	for (int outer = 0; outer < 20; outer++) { // Fills whole snaketrix with empty spaces
 		for (int inner = 0; inner < 20; inner++) {
-			snaketrix[outer][inner] = 0;
+			snaketrix[outer][inner] = 2;
 		}
 	}
 
@@ -162,7 +171,7 @@ void initialiseGrid() { // Sets up the snaketrix
 	body.push_back(headXY);
 }
 
-int newFruit() { // Adds a new fruit to snaketrix
+void newFruit() { // Adds a new fruit to snaketrix
 	srand(time(NULL));
 	int fruitSet = 0;
 	int endCheck = 0;
@@ -172,17 +181,12 @@ int newFruit() { // Adds a new fruit to snaketrix
 		int startY = (rand() % 10);
 		endCheck++; // Increases the amount of spaces checked
 
-		if (endCheck == 200) { // If all but one spaces are full of snake or fruit then the game is won
-			return 1; // Returns end game code
-		}
-
 		if ((snaketrix[startX][startY] != 1) and (snaketrix[startX][startY] != 3)) { // Checks if space is fruit or snake
 			snaketrix[startX][startY] = 3; // If space is empty then fruit is added
 			setColor(5); // Purple
 			draw((startX + 7), (startY + 3), "O"); // Draws fruit
 			fruitSet = 1; // Ends while loop
 		}
-		return 0;
 	}
 }
 
@@ -236,6 +240,48 @@ int moveLoop() { // This is the first main element of the game, when the user ch
 		}
 	}
 	return moveDir; // Returns move direction for use in moveSnake function
+}
+
+int ruleBasedSystem() {
+
+	coordinates targetXY;
+	coordinates ruleHeadXY;
+
+	targetXY.x = 0;
+	targetXY.y = 0;
+
+	ruleHeadXY = body.back();
+
+	for (int outer = 0; outer < 20; outer++) { // Lopps through snaketrix to find fruit
+		for (int inner = 0; inner < 20; inner++) {
+			if (snaketrix[outer][inner] == 3) {
+				targetXY.x = outer;
+				targetXY.y = inner;
+				break;
+			}
+		}
+	}
+
+	if ((targetXY.x < ruleHeadXY.x) and (snaketrix[(ruleHeadXY.x)-1][ruleHeadXY.y] != 1)) { // If target is left and left is not snake go left
+		return 3;
+	} else if ((targetXY.x > ruleHeadXY.x) and (snaketrix[(ruleHeadXY.x) + 1][ruleHeadXY.y] != 1)) {  // If target is up and up is not snake go up
+		return 1;
+	} else if ((targetXY.y < ruleHeadXY.y) and (snaketrix[ruleHeadXY.x][(ruleHeadXY.y) - 1] != 1)) { // If target is down and down is not snake go down
+		return 4;
+	} else if ((targetXY.y > ruleHeadXY.y) and (snaketrix[ruleHeadXY.x][(ruleHeadXY.y) + 1] != 1)) {  // If target is right and right is not snake go right
+		return 2;
+	} else if (snaketrix[(ruleHeadXY.x) - 1][ruleHeadXY.y] == 2) { // If space left is empty go left
+		return 3;
+	} else if (snaketrix[(ruleHeadXY.x) + 1][ruleHeadXY.y] == 2) { // If space right is empty go right
+		return 1;
+	} else if (snaketrix[ruleHeadXY.x][(ruleHeadXY.y) - 1] == 2) { // If space up if empty go up
+		return 4;
+	} else if (snaketrix[ruleHeadXY.x][(ruleHeadXY.y) + 1] == 2) { // If space down is empty go down
+		return 2;
+	}
+	else {
+		return 5;
+	}
 }
 
 int moveSnake(int moveDir) { // This is the second main element of the game, where the snake is moved.
@@ -294,7 +340,7 @@ int moveSnake(int moveDir) { // This is the second main element of the game, whe
 		headXY = body.front(); // Changes head holder to back of snake in order to draw over space and pop front of queue
 		setColor(3);
 		draw((headXY.x + 7), (headXY.y + 3), " "); // Draws empty space over old tail of snake
-		snaketrix[headXY.x][headXY.y] = 0; // Sets position of old tail in snaketrix to empty
+		snaketrix[headXY.x][headXY.y] = 2; // Sets position of old tail in snaketrix to empty
 		body.pop_front(); // Pops old tail from queue
 
 		break;
@@ -321,7 +367,7 @@ int moveSnake(int moveDir) { // This is the second main element of the game, whe
 		headXY = body.front(); // Changes head holder to back of snake in order to draw over space and pop front of queue
 		setColor(3);
 		draw((headXY.x + 7), (headXY.y + 3), " "); // Draws empty space over old tail of snake
-		snaketrix[headXY.x][headXY.y] = 0; // Sets position of old tail in snaketrix to empty
+		snaketrix[headXY.x][headXY.y] = 2; // Sets position of old tail in snaketrix to empty
 		body.pop_front(); // Pops old tail from queue
 
 		break;
@@ -348,7 +394,7 @@ int moveSnake(int moveDir) { // This is the second main element of the game, whe
 		headXY = body.front(); // Changes head holder to back of snake in order to draw over space and pop front of queue
 		setColor(3);
 		draw((headXY.x + 7), (headXY.y + 3), " "); // Draws empty space over old tail of snake
-		snaketrix[headXY.x][headXY.y] = 0; // Sets position of old tail in snaketrix to empty
+		snaketrix[headXY.x][headXY.y] = 2; // Sets position of old tail in snaketrix to empty
 		body.pop_front(); // Pops old tail from queue
 
 		break;

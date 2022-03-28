@@ -33,19 +33,21 @@ int main() {
 	newFruit(); // Adds starting fruit onto snaketrix and draws
 
 	while (1) { // Loops until game ends
-		dir = moveLoop(); // Gets direction from AI or user
+		Sleep(100);
+		//dir = moveLoop(); // Gets direction from AI or user
+		
+		dir = ruleBasedSystem();
+
 		result = moveSnake(dir); // Moves snake
+
 		moves++; // Increments move counter
 		
-		if (result == 1) { // If game over code is returned from snake move then game over
+		if ((result == 1) or (dir == 5)) { // If game over code is returned from snake move then game over
 			break; // End game
 		}
 
 		if (result == 3) { // If fruit is hit by the snake increase score and add new fruit
-			int endCheck = newFruit(); // New fruit
-			if (endCheck == 1) { // If game over code is returned from new fruit (snaketrix full)
-				return 0; // End game
-			}
+			newFruit(); // New fruit
 			score++; // Increment score counter
 		}
 		updateScore(to_string(score), to_string(moves)); // Reprints score

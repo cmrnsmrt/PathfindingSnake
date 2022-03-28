@@ -17,8 +17,9 @@ void initialiseGrid();
 void drawGrid();
 int moveLoop();
 int moveSnake(int moveDir);
-int newFruit();
+void newFruit();
 void endScreen(string score, string moves);
 void updateScore(string score, string moves);
+int ruleBasedSystem();
 
 #endif
