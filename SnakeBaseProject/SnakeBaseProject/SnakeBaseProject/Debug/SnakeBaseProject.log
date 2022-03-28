@@ -1,6 +1,7 @@
 ﻿  Game.cpp
-C:\Users\camer\Documents\GitHub\CMP304Unit1Assessment\SnakeBaseProject\SnakeBaseProject\SnakeBaseProject\Game.cpp(139,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-C:\Users\camer\Documents\GitHub\CMP304Unit1Assessment\SnakeBaseProject\SnakeBaseProject\SnakeBaseProject\Game.cpp(160,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\camer\Documents\GitHub\CMP304Unit1Assessment\SnakeBaseProject\SnakeBaseProject\SnakeBaseProject\Game.cpp(148,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\camer\Documents\GitHub\CMP304Unit1Assessment\SnakeBaseProject\SnakeBaseProject\SnakeBaseProject\Game.cpp(166,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
   Source.cpp
   Generating Code...
+C:\Users\camer\Documents\GitHub\CMP304Unit1Assessment\SnakeBaseProject\SnakeBaseProject\SnakeBaseProject\Game.cpp(187): warning C4715: 'newFruit': not all control paths return a value
   SnakeBaseProject.vcxproj -> C:\Users\camer\Documents\GitHub\CMP304Unit1Assessment\SnakeBaseProject\SnakeBaseProject\Debug\SnakeBaseProject.exe
