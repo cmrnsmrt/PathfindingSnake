@@ -264,11 +264,11 @@ int ruleBasedSystem() {
 
 	if ((targetXY.x < ruleHeadXY.x) and (snaketrix[(ruleHeadXY.x)-1][ruleHeadXY.y] != 1)) { // If target is left and left is not snake go left
 		return 3;
-	} else if ((targetXY.x > ruleHeadXY.x) and (snaketrix[(ruleHeadXY.x) + 1][ruleHeadXY.y] != 1)) {  // If target is up and up is not snake go up
+	} else if ((targetXY.x > ruleHeadXY.x) and (snaketrix[(ruleHeadXY.x) + 1][ruleHeadXY.y] != 1)) {  // If target is right and right is not snake go right
 		return 1;
-	} else if ((targetXY.y < ruleHeadXY.y) and (snaketrix[ruleHeadXY.x][(ruleHeadXY.y) - 1] != 1)) { // If target is down and down is not snake go down
+	} else if ((targetXY.y < ruleHeadXY.y) and (snaketrix[ruleHeadXY.x][(ruleHeadXY.y) - 1] != 1)) { // If target is up and up is not snake go up
 		return 4;
-	} else if ((targetXY.y > ruleHeadXY.y) and (snaketrix[ruleHeadXY.x][(ruleHeadXY.y) + 1] != 1)) {  // If target is right and right is not snake go right
+	} else if ((targetXY.y > ruleHeadXY.y) and (snaketrix[ruleHeadXY.x][(ruleHeadXY.y) + 1] != 1)) {  // If target is down and down is not snake go down
 		return 2;
 	} else if (snaketrix[(ruleHeadXY.x) - 1][ruleHeadXY.y] == 2) { // If space left is empty go left
 		return 3;

@@ -33,7 +33,7 @@ int main() {
 	newFruit(); // Adds starting fruit onto snaketrix and draws
 
 	while (1) { // Loops until game ends
-		Sleep(100);
+		Sleep(0);
 		//dir = moveLoop(); // Gets direction from AI or user
 		
 		dir = finiteStateMachine();
