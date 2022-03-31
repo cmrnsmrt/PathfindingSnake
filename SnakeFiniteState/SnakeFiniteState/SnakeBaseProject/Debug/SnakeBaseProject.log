@@ -2,6 +2,4 @@
   Game.cpp
 C:\Users\camer\Documents\GitHub\CMP304Unit1Assessment\SnakeFiniteState\SnakeFiniteState\SnakeBaseProject\Game.cpp(157,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
 C:\Users\camer\Documents\GitHub\CMP304Unit1Assessment\SnakeFiniteState\SnakeFiniteState\SnakeBaseProject\Game.cpp(175,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-  Source.cpp
-  Generating Code...
   SnakeBaseProject.vcxproj -> C:\Users\camer\Documents\GitHub\CMP304Unit1Assessment\SnakeFiniteState\SnakeFiniteState\Debug\SnakeFiniteState.exe

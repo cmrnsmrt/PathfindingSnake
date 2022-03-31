@@ -166,9 +166,9 @@ void initialiseGrid() { // Sets up the snaketrix
 	headXY.y = startY;
 	body.push_back(headXY);
 
-	snaketrix[startX+1][startY] = 1; // Creates first part of body one to the right
-	headXY.x = startX+1;
-	body.push_back(headXY);
+	//snaketrix[startX+1][startY] = 1; // Creates first part of body one to the right
+	//headXY.x = startX+1;
+	//body.push_back(headXY);
 }
 
 void newFruit() { // Adds a new fruit to snaketrix
@@ -245,14 +245,138 @@ int moveLoop() { // This is the first main element of the game, when the user ch
 int finiteStateMachine() {
 
 	coordinates targetXY;
-	coordinates ruleHeadXY;
+	coordinates finiteHeadXY;
 
 	targetXY.x = 0;
 	targetXY.y = 0;
 
-	ruleHeadXY = body.back();
+	for (int outer = 0; outer < 20; outer++) { // Lopps through snaketrix to find fruit
+		for (int inner = 0; inner < 20; inner++) {
+			if (snaketrix[outer][inner] == 3) {
+				targetXY.x = outer;
+				targetXY.y = inner;
+				break;
+			}
+		}
+	}
 
-	
+	finiteHeadXY = body.back();
+
+	enum class SnakeStates { clear, blocked };
+	class SnakeSurroundings {
+	public:
+		bool up;
+		bool upRight;
+		bool right;
+		bool downRight;
+		bool down;
+		bool downLeft;
+		bool left;
+		bool upLeft;
+	};
+
+	SnakeSurroundings snake_surroundings{};
+	SnakeStates snake_states = SnakeStates::clear;
+	snake_states = SnakeStates::clear;
+
+	snake_surroundings.up = true;
+	snake_surroundings.upRight = true;
+	snake_surroundings.right = true;
+	snake_surroundings.downRight = true;
+	snake_surroundings.down = true;
+	snake_surroundings.downLeft = true;
+	snake_surroundings.left = true;
+	snake_surroundings.upLeft = true;
+
+	if ((snaketrix[(finiteHeadXY.x)][(finiteHeadXY.y) - 1] == 1) or (snaketrix[(finiteHeadXY.x)][(finiteHeadXY.y) - 1] == 0)) {
+		snake_surroundings.up = false;
+	}
+	if ((snaketrix[(finiteHeadXY.x) + 1][(finiteHeadXY.y) - 1] == 1) or (snaketrix[(finiteHeadXY.x) + 1][(finiteHeadXY.y) - 1] == 0)) {
+		snake_surroundings.upRight = false;
+	}
+	if ((snaketrix[(finiteHeadXY.x) + 1][(finiteHeadXY.y)] == 1) or (snaketrix[(finiteHeadXY.x) + 1][(finiteHeadXY.y)] == 0)) {
+		snake_surroundings.right = false;
+	}
+	if ((snaketrix[(finiteHeadXY.x) + 1][(finiteHeadXY.y) + 1] == 1) or (snaketrix[(finiteHeadXY.x) + 1][(finiteHeadXY.y) + 1] == 0)) {
+		snake_surroundings.downRight = false;
+	}
+	if ((snaketrix[(finiteHeadXY.x)][(finiteHeadXY.y) + 1] == 1) or (snaketrix[(finiteHeadXY.x)][(finiteHeadXY.y) + 1] == 0)) {
+		snake_surroundings.down = false;
+	}
+	if ((snaketrix[(finiteHeadXY.x) - 1][(finiteHeadXY.y) + 1] == 1) or (snaketrix[(finiteHeadXY.x) - 1][(finiteHeadXY.y) + 1] == 0)) {
+		snake_surroundings.downLeft = false;
+	}
+	if ((snaketrix[(finiteHeadXY.x) - 1][(finiteHeadXY.y)] == 1) or (snaketrix[(finiteHeadXY.x) - 1][(finiteHeadXY.y)] == 0)) {
+		snake_surroundings.left = false;
+	}
+	if ((snaketrix[(finiteHeadXY.x) - 1][(finiteHeadXY.y) - 1] == 1) or (snaketrix[(finiteHeadXY.x) - 1][(finiteHeadXY.y) - 1] == 0)) {
+		snake_surroundings.upLeft = false;
+	}
+
+	if ((snake_surroundings.up == true) and (snake_surroundings.upRight == true) and (snake_surroundings.right == true) and (snake_surroundings.downRight == true) and (snake_surroundings.down == true) and (snake_surroundings.downLeft == true) and (snake_surroundings.left == true) and (snake_surroundings.upLeft == true)) {
+		snake_states = SnakeStates::clear;
+	}
+	else {
+		snake_states = SnakeStates::blocked;
+	}
+
+	switch (snake_states) {
+	case SnakeStates::clear:
+		if (targetXY.x < finiteHeadXY.x) { // If target is left
+			return 3;
+		}
+		else if (targetXY.x > finiteHeadXY.x) {  // If target is right
+			return 1;
+		}
+		else if (targetXY.y < finiteHeadXY.y) { // If target is up
+			return 4;
+		}
+		else if (targetXY.y > finiteHeadXY.y) {  // If target is down
+			return 2;
+		}
+	case SnakeStates::blocked:
+		if (targetXY.x < finiteHeadXY.x) { // If target is left
+			OutputDebugStringW(L"\nsnake if left passed");
+			if (snake_surroundings.left == true) {
+				return 3;
+			} else if (snake_surroundings.up == true) {
+				return 4;
+			} else if (snake_surroundings.down == true) {
+				return 2;
+			}
+		} 
+		else if (targetXY.x > finiteHeadXY.x) {  // If target is right
+			OutputDebugStringW(L"\nsnake if right passed");
+			if (snake_surroundings.right == true) {
+				return 1;
+			} else if (snake_surroundings.down == true) {
+				return 2;
+			} else if (snake_surroundings.up == true) {
+				return 4;
+			}
+		}
+		else if (targetXY.y < finiteHeadXY.y) { // If target is up
+			OutputDebugStringW(L"\nsnake if up passed");
+			if (snake_surroundings.up == true) {
+				return 4;
+			} else if (snake_surroundings.right == true) {
+				return 1;
+			} else if (snake_surroundings.left == true) {
+				return 3;
+			}
+		}
+		else if (targetXY.y > finiteHeadXY.y) {  // If target is down
+			OutputDebugStringW(L"\nsnake if down passed");
+			if (snake_surroundings.down == true) {
+				return 2;
+			} else if (snake_surroundings.left == true) {
+				return 3;
+			} else if (snake_surroundings.right == true) {
+				return 1;
+			}
+		}
+	}
+	return 0;
 }
 
 int moveSnake(int moveDir) { // This is the second main element of the game, where the snake is moved.
@@ -284,7 +408,7 @@ int moveSnake(int moveDir) { // This is the second main element of the game, whe
 		headXY = body.front(); // Changes head holder to back of snake in order to draw over space and pop front of queue
 		setColor(3);
 		draw((headXY.x + 7), (headXY.y + 3), " "); // Draws empty space over old tail of snake
-		snaketrix[headXY.x][headXY.y] = 0; // Sets position of old tail in snaketrix to empty
+		snaketrix[headXY.x][headXY.y] = 2; // Sets position of old tail in snaketrix to empty
 		body.pop_front(); // Pops old tail from queue
 
 		break;

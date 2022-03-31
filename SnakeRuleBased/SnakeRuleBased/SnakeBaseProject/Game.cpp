@@ -313,7 +313,7 @@ int moveSnake(int moveDir) { // This is the second main element of the game, whe
 		headXY = body.front(); // Changes head holder to back of snake in order to draw over space and pop front of queue
 		setColor(3);
 		draw((headXY.x + 7), (headXY.y + 3), " "); // Draws empty space over old tail of snake
-		snaketrix[headXY.x][headXY.y] = 0; // Sets position of old tail in snaketrix to empty
+		snaketrix[headXY.x][headXY.y] = 2; // Sets position of old tail in snaketrix to empty
 		body.pop_front(); // Pops old tail from queue
 
 		break;
