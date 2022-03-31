@@ -262,8 +262,8 @@ int finiteStateMachine() {
 
 	finiteHeadXY = body.back();
 
-	enum class SnakeStates { clear, blocked };
-	class SnakeSurroundings {
+	enum class SnakeStates { clear, blocked }; // Class that holds the state of the snake
+	class SnakeSurroundings { // Class that holds the state of surrounding spaces
 	public:
 		bool up;
 		bool upRight;
@@ -275,11 +275,11 @@ int finiteStateMachine() {
 		bool upLeft;
 	};
 
-	SnakeSurroundings snake_surroundings{};
+	SnakeSurroundings snake_surroundings{}; // Initialise classes
 	SnakeStates snake_states = SnakeStates::clear;
 	snake_states = SnakeStates::clear;
 
-	snake_surroundings.up = true;
+	snake_surroundings.up = true; // True if space is empty
 	snake_surroundings.upRight = true;
 	snake_surroundings.right = true;
 	snake_surroundings.downRight = true;
@@ -288,42 +288,42 @@ int finiteStateMachine() {
 	snake_surroundings.left = true;
 	snake_surroundings.upLeft = true;
 
-	if ((snaketrix[(finiteHeadXY.x)][(finiteHeadXY.y) - 1] == 1) or (snaketrix[(finiteHeadXY.x)][(finiteHeadXY.y) - 1] == 0)) {
-		snake_surroundings.up = false;
+	if ((snaketrix[(finiteHeadXY.x)][(finiteHeadXY.y) - 1] == 1) or (snaketrix[(finiteHeadXY.x)][(finiteHeadXY.y) - 1] == 0)) { // Checks if space up is blocked
+		snake_surroundings.up = false; // Sets space up as blocked in class
 	}
-	if ((snaketrix[(finiteHeadXY.x) + 1][(finiteHeadXY.y) - 1] == 1) or (snaketrix[(finiteHeadXY.x) + 1][(finiteHeadXY.y) - 1] == 0)) {
-		snake_surroundings.upRight = false;
+	if ((snaketrix[(finiteHeadXY.x) + 1][(finiteHeadXY.y) - 1] == 1) or (snaketrix[(finiteHeadXY.x) + 1][(finiteHeadXY.y) - 1] == 0)) { // Checks if space up and right is blocked
+		snake_surroundings.upRight = false; // Sets space up and right as blocked in class
 	}
-	if ((snaketrix[(finiteHeadXY.x) + 1][(finiteHeadXY.y)] == 1) or (snaketrix[(finiteHeadXY.x) + 1][(finiteHeadXY.y)] == 0)) {
-		snake_surroundings.right = false;
+	if ((snaketrix[(finiteHeadXY.x) + 1][(finiteHeadXY.y)] == 1) or (snaketrix[(finiteHeadXY.x) + 1][(finiteHeadXY.y)] == 0)) { // Checks if space right is blocked
+		snake_surroundings.right = false; // Sets space right as blocked in class
 	}
-	if ((snaketrix[(finiteHeadXY.x) + 1][(finiteHeadXY.y) + 1] == 1) or (snaketrix[(finiteHeadXY.x) + 1][(finiteHeadXY.y) + 1] == 0)) {
-		snake_surroundings.downRight = false;
+	if ((snaketrix[(finiteHeadXY.x) + 1][(finiteHeadXY.y) + 1] == 1) or (snaketrix[(finiteHeadXY.x) + 1][(finiteHeadXY.y) + 1] == 0)) { // Checks if space down and right is blocked
+		snake_surroundings.downRight = false; // Sets space down and right as blocked in class
 	}
-	if ((snaketrix[(finiteHeadXY.x)][(finiteHeadXY.y) + 1] == 1) or (snaketrix[(finiteHeadXY.x)][(finiteHeadXY.y) + 1] == 0)) {
-		snake_surroundings.down = false;
+	if ((snaketrix[(finiteHeadXY.x)][(finiteHeadXY.y) + 1] == 1) or (snaketrix[(finiteHeadXY.x)][(finiteHeadXY.y) + 1] == 0)) { // Checks if space down is blocked
+		snake_surroundings.down = false; // Sets space down as blocked in class
 	}
-	if ((snaketrix[(finiteHeadXY.x) - 1][(finiteHeadXY.y) + 1] == 1) or (snaketrix[(finiteHeadXY.x) - 1][(finiteHeadXY.y) + 1] == 0)) {
-		snake_surroundings.downLeft = false;
+	if ((snaketrix[(finiteHeadXY.x) - 1][(finiteHeadXY.y) + 1] == 1) or (snaketrix[(finiteHeadXY.x) - 1][(finiteHeadXY.y) + 1] == 0)) { // Checks if space down and left is blocked
+		snake_surroundings.downLeft = false; // Sets space down and left as blocked in class
 	}
-	if ((snaketrix[(finiteHeadXY.x) - 1][(finiteHeadXY.y)] == 1) or (snaketrix[(finiteHeadXY.x) - 1][(finiteHeadXY.y)] == 0)) {
-		snake_surroundings.left = false;
+	if ((snaketrix[(finiteHeadXY.x) - 1][(finiteHeadXY.y)] == 1) or (snaketrix[(finiteHeadXY.x) - 1][(finiteHeadXY.y)] == 0)) { // Checks if space left is blocked
+		snake_surroundings.left = false; // Sets space left as blocked in class
 	}
-	if ((snaketrix[(finiteHeadXY.x) - 1][(finiteHeadXY.y) - 1] == 1) or (snaketrix[(finiteHeadXY.x) - 1][(finiteHeadXY.y) - 1] == 0)) {
-		snake_surroundings.upLeft = false;
+	if ((snaketrix[(finiteHeadXY.x) - 1][(finiteHeadXY.y) - 1] == 1) or (snaketrix[(finiteHeadXY.x) - 1][(finiteHeadXY.y) - 1] == 0)) { // Checks if space up and left is blocked
+		snake_surroundings.upLeft = false; // Sets space up and left as blocked in class
 	}
 
 	if ((snake_surroundings.up == true) and (snake_surroundings.upRight == true) and (snake_surroundings.right == true) and (snake_surroundings.downRight == true) and (snake_surroundings.down == true) and (snake_surroundings.downLeft == true) and (snake_surroundings.left == true) and (snake_surroundings.upLeft == true)) {
-		snake_states = SnakeStates::clear;
+		snake_states = SnakeStates::clear; // If all spaces are clear then the snakes status is set and clear
 	}
 	else {
-		snake_states = SnakeStates::blocked;
+		snake_states = SnakeStates::blocked; // If any spaces are blocked then the snakes status is set as blocked
 	}
 
-	switch (snake_states) {
-	case SnakeStates::clear:
+	switch (snake_states) { // Switches depending on the status of the snake
+	case SnakeStates::clear: // If there are no obstacles snake can simply move
 		if (targetXY.x < finiteHeadXY.x) { // If target is left
-			return 3;
+			return 3; 
 		}
 		else if (targetXY.x > finiteHeadXY.x) {  // If target is right
 			return 1;
@@ -334,49 +334,53 @@ int finiteStateMachine() {
 		else if (targetXY.y > finiteHeadXY.y) {  // If target is down
 			return 2;
 		}
-	case SnakeStates::blocked:
+	case SnakeStates::blocked: // If the snake is set as blockd then obstacles must be negotiated
 		if (targetXY.x < finiteHeadXY.x) { // If target is left
-			OutputDebugStringW(L"\nsnake if left passed");
-			if (snake_surroundings.left == true) {
+			if (snake_surroundings.left == true) { // Checks if left is clear
 				return 3;
-			} else if (snake_surroundings.up == true) {
+			} else if (snake_surroundings.up == true) { // If left is not clear and up is clear
 				return 4;
-			} else if (snake_surroundings.down == true) {
+			} else if (snake_surroundings.down == true) { // If left and up are not clear and down is clear
 				return 2;
+			} else if (snake_surroundings.right == true) { // If left, up and down are not clear and right is clear
+				return 1;
 			}
 		} 
 		else if (targetXY.x > finiteHeadXY.x) {  // If target is right
-			OutputDebugStringW(L"\nsnake if right passed");
-			if (snake_surroundings.right == true) {
+			if (snake_surroundings.right == true) { // Checks if right is clear
 				return 1;
-			} else if (snake_surroundings.down == true) {
-				return 2;
-			} else if (snake_surroundings.up == true) {
+			} else if (snake_surroundings.up == true) { // If right is not clear and up is clear
 				return 4;
+			} else if (snake_surroundings.down == true) { // If right and up are not clear and down is clear
+				return 2;
+			} else if (snake_surroundings.left == true) { // If right, up and dowb are not clear and left is clear
+				return 3;
 			}
 		}
 		else if (targetXY.y < finiteHeadXY.y) { // If target is up
-			OutputDebugStringW(L"\nsnake if up passed");
-			if (snake_surroundings.up == true) {
+			if (snake_surroundings.up == true) { // Checks if right is clear
 				return 4;
-			} else if (snake_surroundings.right == true) {
-				return 1;
-			} else if (snake_surroundings.left == true) {
+			} else if (snake_surroundings.left == true) { // If up is not clear and left is clear
 				return 3;
+			} else if (snake_surroundings.right == true) { // If up and left are not clear and right is clear
+				return 1;
+			} else if (snake_surroundings.down == true) { // If up, left and right are not clear and dowb is clear
+				return 2;
 			}
 		}
 		else if (targetXY.y > finiteHeadXY.y) {  // If target is down
-			OutputDebugStringW(L"\nsnake if down passed");
-			if (snake_surroundings.down == true) {
+			if (snake_surroundings.down == true) { // Checks if down is clear
 				return 2;
-			} else if (snake_surroundings.left == true) {
+			} else if (snake_surroundings.left == true) { // If down is not clear and left is clear
 				return 3;
-			} else if (snake_surroundings.right == true) {
+			} else if (snake_surroundings.right == true) { // If down and left are not clear and right is clear
 				return 1;
+			} else if (snake_surroundings.up == true) { // If down, left right are not clear and up is clear
+				return 4;
 			}
 		}
 	}
-	return 0;
+	return 5;
 }
 
 int moveSnake(int moveDir) { // This is the second main element of the game, where the snake is moved.
